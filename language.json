@@ -1,0 +1,40 @@
+{"Chinese": 
+	{
+		"key in size": "輸入尺寸",
+		"width": "寬",
+		"height": "高",
+		"please key in width and height": "請輸入寬與高",
+		"accept": "確認",
+		"please key in a number!": "請輸入數字！",
+		"please key in a number at least 3!": "請輸入至少為3的整數！",
+		"cellular automaton": "細胞自動機",
+		"round number": "回合數",
+		"rounds before cycle": "循環前回合數",
+		"cycling length": "循環週期",
+		"unknown": "未知",
+		"up": "上",
+		"down": "下",
+		"left": "左",
+		"right": "右",
+		"left_top": "左上",
+		"left_bottom": "左下",
+		"right_top": "右上",
+		"right_bottom": "右下",
+		"four direct": "四周",
+		"eight direct": "八周",
+		"reset size": "重設長寬",
+		"clear": "清空",
+		"stop and go back": "停止並返回",
+		"start": "開始",
+		"stop": "停止",
+		"times per second": "每秒幾次",
+		"seconds per time": "每次幾秒",
+		"detect direction": "偵測方向",
+		"keep": "存活",
+		"born": "生成",
+		"vertical_cycle": "垂直方向連通",
+		"horizontal_cycle": "水平方向連通"
+	}
+,"English":
+ 	{}
+}
