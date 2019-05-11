@@ -46,26 +46,6 @@ class App():
 	def title(widget, s: str):
 		if isinstance(widget, tk.Wm):
 			widget.title(s)
-	'''
-	def _grid_button_bind(self, atm: automaton.CellAutomata, cells, i: int, j: int, left: bool):
-		def sol(*args):
-			print(type((args[0]).type))
-			if self._simulating:
-				return
-			if left:
-				if atm.getfix((i, j)):
-					return
-				sol = not atm[i, j]
-				cells[i][j]['bg'] = '#000' if sol else '#fff'
-				atm.setvalue((i, j), sol)
-			else:
-				atm.switchfix((i, j))
-				sol = atm.getfix((i, j))
-				cells[i][j]['fg'] = '#fff' if atm[i, j] else '#000'
-				cells[i][j]['text'] = 'Ⓧ' if sol else '　' #Ⓧ⊗
-				#cells[i][j]['borderwidth'] = 10
-		return sol
-	'''
 	@staticmethod
 	def _draw_cross_for_fix(atm, cell_frame, i, j):
 		cell_frame.create_line(j * grid_size + horizon_offset, i * grid_size + vertical_offset
@@ -86,31 +66,13 @@ class App():
 				if atm.getfix((i, j)):
 					return
 				sol = not atm[i, j]
-				#cells[i][j]['bg'] = '#000' if sol else '#fff'
 				cell_frame.itemconfigure(cell_id[i][j], fill = '#000' if sol else '#fff')
 				atm.setvalue((i, j), sol)
 			elif event.num == 3:
 				atm.switchfix((i, j))
 				sol = atm.getfix((i, j))
-				#cells[i][j]['fg'] = '#fff' if atm[i, j] else '#000'
-				#cells[i][j]['text'] = 'Ⓧ' if sol else '　' #Ⓧ⊗
-				#cells[i][j]['borderwidth'] = 10
 				if sol:
-					#cell_frame.create_text(j * grid_size + (grid_size - 1) / 2, i * grid_size + (grid_size - 1) / 2, anchor = tk.CENTER, text = '⊗'
-					#	, tags = ('fix', f'fix{i}-{j}'), fill = '#fff' if atm[i, j] else '#000', font =  ('Monospace', -grid_size))
-					#cell_frame.create_text(j * grid_size, i * grid_size, anchor = tk.NW, text = 'Ｘ'
-					#	, tags = ('fix', f'fix{i}-{j}'), fill = '#fff' if atm[i, j] else '#000', font =  ('Monospace', -grid_size, 'bold'))
-					#cell_frame.create_line(j * grid_size + horizon_offset, i * grid_size + vertical_offset
-					#	, (j + 1) * grid_size - 1 + horizon_offset, (i + 1) * grid_size - 1 + vertical_offset
-					#	, tags = ('fix', f'fix{i}-{j}'), fill = '#fff' if atm[i, j] else '#000', width = ceil(grid_size / 8))
-					#cell_frame.create_line((j + 1) * grid_size - 1 + horizon_offset, i * grid_size + vertical_offset
-					#	, j * grid_size + horizon_offset, (i + 1) * grid_size - 1 + vertical_offset
-					#	, tags = ('fix', f'fix{i}-{j}'), fill = '#fff' if atm[i, j] else '#000', width = ceil(grid_size / 8))
 					self._draw_cross_for_fix(atm, cell_frame, i, j)
-					#cell_frame.create_rectangle(j * grid_size, i * grid_size, (j + 1) * grid_size, (i + 1) * grid_size
-					#	, fill = '#111' if atm[i, j] else '#999', state = tk.DISABLED, width = 0, tags = ('fix', f'fix{i}-{j}'))
-					#cell_frame.create_bitmap(j * grid_size, i * grid_size, anchor = tk.NW, bitmap = 'error'
-					#	, tags = ('fix', f'fix{i}-{j}'), foreground = '#fff' if atm[i, j] else '#000')
 				else:
 					cell_frame.delete(f'fix{i}-{j}')
 		return sol
@@ -148,7 +110,6 @@ class App():
 		accept_button.pack()
 
 		while not self._close:
-			#input_size_widget.mainloop()
 			self.mainloop(input_size_widget)
 			if not self._close:
 				fail = True
@@ -184,9 +145,6 @@ class App():
 
 		atm = automaton.CellAutomata(width = width, height = height)
 
-		#cell_frame = tk.Frame(life_game_widget)
-		#cells = [[tk.Label(cell_frame, text = '　', bg = '#fff', fg = '#000', font = ('Monospace', fontsize)) for j in range(width)] for i in range(height)]
-		#print(4)
 		cell_frame = tk.Canvas(life_game_widget, bg = '#fff', width = width * grid_size, height = height * grid_size)
 		cell_id = [[cell_frame.create_rectangle(j * grid_size + horizon_offset, i * grid_size + vertical_offset, (j + 1) * grid_size + horizon_offset, (i + 1) * grid_size + vertical_offset, fill = '#fff', state = tk.DISABLED, width = 0, tags = 'cell')
 					for j in range(width)] for i in range(height)]
@@ -221,13 +179,6 @@ class App():
 		number_option['keep'][3].select()
 		number_option['born'][3].select()
 
-		#_48frame = tk.Frame(life_game_widget)
-		#_48var = tk.IntVar(_48frame)
-		#_48var.set(4)
-		#four_option = tk.Radiobutton(_48frame, text = word['four direct'], variable = _48var, value = 4)
-		#eight_option = tk.Radiobutton(_48frame, text = word['eight direct'], variable = _48var, value = 8)
-		#four_option.select()
-
 		flag_msg = tk.StringVar(life_game_widget) #invisible
 		bottombutton = tk.Frame(life_game_widget)
 		back = tk.Button(bottombutton, text = word['reset size'], state = tk.NORMAL
@@ -249,11 +200,6 @@ class App():
 		freq_times_option.select()
 
 		wait_time = lambda: 1000 // freq_var.get() if freq_times.get() else 1000 * freq_var.get()
-
-		#for i, j in product(range(height), range(width)):
-		#	cells[i][j].bind('<Button-1>', self._grid_button_bind(atm, cells, i, j, True))
-		#	cells[i][j].bind('<Button-3>', self._grid_button_bind(atm, cells, i, j, False))
-		#	cells[i][j].grid(row = i, column = j, sticky = 'nesw')
 
 		life_game_widget.pack(expand = True)
 		cell_frame.pack()
@@ -357,7 +303,6 @@ class App():
 				for i, j in product(range(height), range(width)):
 					if atm.getfix((i, j)):
 						self._draw_cross_for_fix(atm, cell_frame, i, j)
-		#atm.stop_simulate()
 		life_game_widget.destroy()
 	def mainloop(self, widget):
 		self._now_mainloop = widget
@@ -368,29 +313,5 @@ class App():
 		if self._now_mainloop is not None:
 			self._now_mainloop.quit()
 
-class AppTest(tk.Frame):
-	def __init__(self, master=None):
-		super().__init__(master)
-		self.master = master
-		self.pack()
-		self.create_widgets()
-
-	def create_widgets(self):
-		self.hi_there = tk.Button(self)
-		self.hi_there["text"] = "Hello World\n(click me)"
-		self.hi_there["command"] = self.say_hi
-		self.hi_there.pack(side="top")
-
-		self.quit = tk.Button(self, text="QUIT", fg="red",
-							  command=self.master.destroy)
-		self.quit.pack(side="bottom")
-
-	def say_hi(self):
-		print("hi there, everyone!")
-
-#tcl = tk.Tcl()
-#tcl.loadtk()
-#app = AppTest(tcl)
-
-#app.mainloop()
-App()
+if __name__ == '__main__':
+	App()

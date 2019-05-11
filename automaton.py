@@ -66,22 +66,17 @@ class CellAutomata():
 	def simulate(self, func, rnd: Optional[int] = None, change_to_state = noop, change_to_status = noop, pick_loop = False):
 		if change_to_state is None:
 			change_to_state = noop
-		#if self._simulating:
-		#	return
 		ite = None
 		if rnd is None:
 			ite = count(0)
 		else:
 			ite = range(rnd)
-		#self._simulating = True
 		round_count = 1
 		loop_set, loop_cycle, round_before_cycle = OrderedDict(), None, None
 		if pick_loop:
 			s = tuple([tuple([self._l[i][j] for j in range(self._width)]) for i in range(self._height)])
 			loop_set[s] = ''
 		for _ in ite:
-			#if not self._simulating:
-			#	break
 			l = [[self._l[i][j] for j in range(self._width)] for i in range(self._height)]
 			for i, j in product(range(self._height), range(self._width)):
 				if not self._fix[i][j]:
@@ -102,9 +97,6 @@ class CellAutomata():
 			msg = (yield round_count, loop_cycle, round_before_cycle)
 			if msg is not None:
 				break
-		#self.stop_simulate()
-	#def stop_simulate(self):
-	#	self._simulating = False
 	def __str__(self):
 		return self.string(str)
 	def string(self, func):
